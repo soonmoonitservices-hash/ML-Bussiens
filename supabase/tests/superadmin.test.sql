@@ -1,4 +1,4 @@
--- Test: Superadmin. Nur rasho.juan95@gmail.com darf Firmen auflisten, sperren und löschen.
+-- Test: Superadmin. Nur DEINE-SUPERADMIN-EMAIL darf Firmen auflisten, sperren und löschen.
 -- Läuft nach _helpers.sql und endet mit ROLLBACK.
 
 do $$
@@ -36,7 +36,7 @@ begin
   perform _t_logout();
 
   perform _t_login(v_super);
-  assert is_superadmin(), 'rasho.juan95@gmail.com ist Superadmin (auch bei anderer Schreibweise)';
+  assert is_superadmin(), 'DEINE-SUPERADMIN-EMAIL ist Superadmin (auch bei anderer Schreibweise)';
   assert (select count(*) from superadmin_tenants()) = 2, 'Zwei Firmen sichtbar';
   assert (select chef_email from superadmin_tenants() where id = v_tenant_b) = 'chef-b@test.de', 'Chef von B';
   perform _t_fails(

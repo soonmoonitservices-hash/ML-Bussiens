@@ -1,4 +1,4 @@
--- Superadmin: genau ein Konto (rasho.juan95@gmail.com) darf Firmen und ihre Chefs verwalten.
+-- Superadmin: genau ein Konto (DEINE-SUPERADMIN-EMAIL) darf Firmen und ihre Chefs verwalten.
 -- Hier: wer Superadmin ist, und das Sperren einer ganzen Firma. Ist eine Firma gesperrt,
 -- sehen und ändern ihre Benutzer (Chef und Manager) nichts mehr.
 
@@ -9,7 +9,7 @@ alter table platform_admins enable row level security;
 revoke all on platform_admins from authenticated, anon;
 comment on table platform_admins is 'Superadmins der Plattform (E-Mail, klein geschrieben). Nur der Betreiber ändert sie.';
 
-insert into platform_admins (email) values ('rasho.juan95@gmail.com');
+insert into platform_admins (email) values ('DEINE-SUPERADMIN-EMAIL');
 
 create function is_superadmin() returns boolean
 language sql stable security definer set search_path = public as $$

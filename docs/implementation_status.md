@@ -62,7 +62,7 @@ Feature.
 - Bestand entfernt (Migration 29) und alles löschbar (Migration 30), beides lokal getestet, noch nicht in der Cloud. Reiter „Bestand“ heißt jetzt „Produkte“. Mehrwertsteuer nur noch bei Rechnungen.
 - Begründung bei Kassendifferenz ist freiwillig (Migration 31) und das übergebene Bargeld geht in den Gewinn ein (Migration 32): Gewinn = Umsatz − Wareneinsatz − Ausgaben + Differenz. Beides nur lokal.
 - Kleinunternehmer-Regelung entfernt (Migration 33, lokal): Rechnungen weisen immer Mehrwertsteuer aus; die Einstellung ist aus der App verschwunden und in der Datenbank gesperrt.
-- Superadmin (Migrationen 34-35, Edge Function `superadmin-delete-firm`): Firmen sperren oder endgültig löschen. Nur rasho.juan95@gmail.com.
+- Superadmin (Migrationen 34-35, Edge Function `superadmin-delete-firm`): Firmen sperren oder endgültig löschen. Nur DEINE-SUPERADMIN-EMAIL.
 - Neue Firma anlegen (2026-11-24): im Bildschirm „Neuer Benutzer“ wählt nur der Superadmin zwischen „Zu meiner Firma“ und „Neue Firma“ (Edge Function `create-user` mit `mode`, lokal getestet). Der frühere Bildschirm „Neuer Chef“ und die Funktion `superadmin-create-chef` entfallen. **Reihenfolge beim Ausrollen:** zuerst `create-user` in der Cloud neu einspielen (rückwärtskompatibel), dann die neue App verteilen, danach `superadmin-create-chef` in der Cloud löschen.
 - Produkte mit zwei Namen (Deutsch, Arabisch; mindestens einer) und Karton-Inhalt direkt im Produkt (Migration 36, lokal getestet): ersetzt die getrennten Mischkartons.
 - Beim Tour-Abschluss lassen sich aus einem Karton einzelne Produkte abziehen: zurück oder geschenkt, der Umsatz sinkt um ihren Verkaufspreis (Migration 37, lokal getestet).

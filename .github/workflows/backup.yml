@@ -1,0 +1,53 @@
+name: Backup
+
+# Nächtlich 02:30 UTC. Tagesbackups bleiben 30 Tage als Artifact.
+# Das Backup am letzten Tag des Monats wird zusätzlich in ein privates Repository
+# gelegt und dort 10 Jahre aufbewahrt (GoBD). Das Backup hält das Free-Projekt nebenbei aktiv.
+on:
+  schedule:
+    - cron: '30 2 * * *'
+  workflow_dispatch:
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      BACKUP_PASSPHRASE: ${{ secrets.BACKUP_PASSPHRASE }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Backup erstellen (verschlüsselt)
+        run: bash scripts/backup.sh backups
+
+      - name: Tagesbackup 30 Tage aufbewahren
+        uses: actions/upload-artifact@v4
+        with:
+          name: warenbestand-backup
+          path: backups/*.gpg
+          retention-days: 30
+
+      - name: Letzter Tag des Monats? (Archiv-Backup)
+        id: month_end
+        run: |
+          if [ "$(date -u -d tomorrow +%d)" = "01" ]; then
+            echo "is_month_end=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Monatsend-Backup ins private Archiv-Repository legen
+        if: steps.month_end.outputs.is_month_end == 'true'
+        env:
+          ARCHIVE_REPO: ${{ secrets.BACKUP_ARCHIVE_REPO }}
+          ARCHIVE_TOKEN: ${{ secrets.BACKUP_ARCHIVE_TOKEN }}
+        run: |
+          git clone "https://x-access-token:${ARCHIVE_TOKEN}@github.com/${ARCHIVE_REPO}.git" archive
+          mkdir -p archive/monthly
+          cp backups/*.gpg archive/monthly/
+          cd archive
+          git config user.name "backup-bot"
+          git config user.email "backup-bot@users.noreply.github.com"
+          git add monthly
+          git commit -m "Monatsend-Backup $(date -u +%Y-%m-%d)"
+          git push

@@ -1,0 +1,7 @@
+{
+  "FLAVOR": "prod",
+  "SUPABASE_URL": "https://<projekt-ref>.supabase.co",
+  "SUPABASE_ANON_KEY": "<anon key aus dem Supabase-Dashboard (nie den service_role key!)>",
+  "PRIVACY_URL": "https://<firma>/datenschutz",
+  "IMPRINT_URL": "https://<firma>/impressum"
+}

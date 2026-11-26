@@ -1,0 +1,26 @@
+include: package:very_good_analysis/analysis_options.yaml
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "lib/l10n/generated/**"
+    - build/**
+    - android/**
+    - ios/**
+
+linter:
+  rules:
+    public_member_api_docs: false
+    lines_longer_than_80_chars: false
+    always_use_package_imports: true
+    avoid_dynamic_calls: true
+    require_trailing_commas: true
+    prefer_const_constructors: true
+    # Stil des Projekts: Klassenname im Konstruktor, Pakete in Gruppen sortiert
+    unnecessary_type_name_in_constructor: false
+    unnecessary_const_in_enum_constructor: false
+    sort_pub_dependencies: false
+    avoid_equals_and_hash_code_on_mutable_classes: false
+    # Platzhalter-Dateien tragen noch TODO-Hinweise
+    flutter_style_todos: false

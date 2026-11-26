@@ -1,0 +1,21 @@
+name: CI
+
+# Bei jedem Push: flutter analyze und flutter test.
+# Datenbank-Tests laufen nur lokal vor einem Release (make test-backend).
+on:
+  push:
+  pull_request:
+
+jobs:
+  flutter:
+    name: Flutter (analyze, test)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - run: flutter analyze
+      - run: flutter test

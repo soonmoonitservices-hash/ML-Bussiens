@@ -1,0 +1,26 @@
+name: Release
+
+# Bei einem Versions-Tag (z. B. v1.0.0) werden die Migrationen auf das Produktions-Projekt gespielt.
+# Die App-Builds (TestFlight, Play Intern) kommen mit dem Flutter-Projekt dazu.
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  database:
+    name: Migrationen auf Produktion
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+      SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+      - run: supabase link --project-ref "$SUPABASE_PROJECT_REF"
+      - run: supabase db push
+      - run: supabase functions deploy delete-account

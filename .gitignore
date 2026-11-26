@@ -1,0 +1,24 @@
+# Konfiguration mit Zugangsdaten (Vorlagen: config/*.example.json)
+config/dev.json
+config/prod.json
+passwort.txt
+.env
+.env.*
+
+# Backups und Supabase-Arbeitsdateien
+backups/
+supabase/.temp/
+supabase/.branches/
+
+# Flutter / Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+build/
+*.g.dart
+*.freezed.dart
+.idea/
+*.iml
+.DS_Store
+android/.kotlin/
+*.log
